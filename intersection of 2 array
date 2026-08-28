@@ -1,0 +1,38 @@
+bool    is_in(int* list, int list_size, int num){
+    while(list_size--){
+        if (num == list[list_size])
+            return true;
+    }
+    return false;
+}
+
+void    inter(int* l1, int l1_size, int* l2, int l2_size, int *result, int *resultSize){
+
+    while (l1_size--){
+        if (!is_in(result, *resultSize, l1[l1_size]) && 
+                is_in(l2, l2_size, l1[l1_size]))
+            {
+            result[*resultSize] = l1[l1_size];
+            (*resultSize)++;
+        }
+    }
+}
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* intersection(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
+    int *result;
+
+    *returnSize = 0;
+
+    if (nums2Size < nums1Size){
+        result = malloc(sizeof(int) * nums2Size);
+        inter(nums2, nums2Size, nums1, nums1Size, result, returnSize);
+    }
+    else{
+        result = malloc(sizeof(int) * nums1Size);
+        inter(nums1, nums1Size, nums2, nums2Size, result, returnSize);
+    }
+    return result;
+}
