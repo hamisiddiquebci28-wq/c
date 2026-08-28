@@ -1,0 +1,23 @@
+#include <vector>
+
+class Solution {
+public:
+    int removeDuplicates(std::vector<int>& nums) {
+        if (nums.empty()) return 0;
+        
+        // This pointer tracks where the next unique element should be written
+        int insertIndex = 1; 
+        
+        // Scan the array starting from the second element
+        for (int i = 1; i < nums.size(); ++i) {
+            // If the current element is different from the previous one, it's unique
+            if (nums[i] != nums[i - 1]) {
+                nums[insertIndex] = nums[i]; // Write it to our unique boundary
+                insertIndex++;               // Move the unique boundary forward
+            }
+        }
+        
+        // The index value naturally equals the count of unique numbers
+        return insertIndex;
+    }
+};
