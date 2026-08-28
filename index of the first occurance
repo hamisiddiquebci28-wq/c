@@ -1,0 +1,16 @@
+#include <string>
+
+class Solution {
+public:
+    int strStr(std::string haystack, std::string needle) {
+        // Use standard string find function
+        size_t found = haystack.find(needle);
+        
+        // string::npos is returned if the needle is not found
+        if (found != std::string::npos) {
+            return found;
+        }
+        
+        return -1;
+    }
+};
