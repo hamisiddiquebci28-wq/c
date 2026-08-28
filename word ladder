@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+// Helper function to check if two words differ by exactly one character
+bool isAdjacent(const char* word1, const char* word2, int len) {
+    int diffCount = 0;
+    for (int i = 0; i < len; i++) {
+        if (word1[i] != word2[i]) {
+            diffCount++;
+            if (diffCount > 1) return false;
+        }
+    }
+    return diffCount == 1;
+}
+
+int ladderLength(char* beginWord, char* endWord, char** wordList, int wordListSize) {
+    int wordLen = strlen(beginWord);
+    
+    // Step 1: Find if endWord is in the wordList. If not, no path is possible.
+    int endIndex = -1;
+    for (int i = 0; i < wordListSize; i++) {
+        if (strcmp(wordList[i], endWord) == 0) {
+            endIndex = i;
+            break;
+        }
+    }
+    if (endIndex == -1) return 0;
+
+    // Step 2: Set up BFS structures
+    // queue elements store the index of the word in wordList. 
+    // We reserve slot wordListSize for the beginWord.
+    int* queue = (int*)malloc((wordListSize + 1) * sizeof(int));
+    bool* visited = (bool*)calloc(wordListSize, sizeof(bool));
+    
+    int head = 0;
+    int tail = 0;
+    
+    // Push the beginWord (represented by index wordListSize) into queue
+    queue[tail++] = wordListSize; 
+    
+    int level = 1; // The sequence starting length includes beginWord
+
+    // Step 3: Run BFS
+    while (head < tail) {
+        int levelSize = tail - head;
+        
+        // Process all nodes at the current level
+        for (int i = 0; i < levelSize; i++) {
+            int currIndex = queue[head++];
+            char* currWord = (currIndex == wordListSize) ? beginWord : wordList[currIndex];
+            
+            // If we found the end word, return the current path length
+            if (currIndex == endIndex) {
+                free(queue);
+                free(visited);
+                return level;
+            }
+            
+            // Check all unvisited words in the list to find neighbors
+            for (int j = 0; j < wordListSize; j++) {
+                if (!visited[j] && isAdjacent(currWord, wordList[j], wordLen)) {
+                    visited[j] = true;
+                    queue[tail++] = j;
+                }
+            }
+        }
+        level++; // Increment path length for the next depth layer
+    }
+
+    // Clean up memory if no path is found
+    free(queue);
+    free(visited);
+    return 0;
+}
