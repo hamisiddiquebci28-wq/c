@@ -1,0 +1,24 @@
+#include <iostream>
+
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        // Negative numbers are not palindromes due to the '-' sign.
+        // Also, if the last digit is 0, the first digit must be 0 (only '0' itself satisfies this).
+        if (x < 0 || (x % 10 == 0 && x != 0)) {
+            return false;
+        }
+
+        int reversedHalf = 0;
+        // Reversing the second half of the integer
+        while (x > reversedHalf) {
+            reversedHalf = reversedHalf * 10 + x % 10;
+            x /= 10;
+        }
+
+        // For even-length numbers, x should equal reversedHalf (e.g., 1221 -> x = 12, reversedHalf = 12)
+        // For odd-length numbers, we can get rid of the middle digit by reversedHalf / 10
+        // (e.g., 12321 -> x = 12, reversedHalf = 123 -> reversedHalf / 10 = 12)
+        return x == reversedHalf || x == reversedHalf / 10;
+    }
+};
