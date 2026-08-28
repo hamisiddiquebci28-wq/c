@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        ListNode *slow = head;
+        ListNode *fast = head;
+        
+        // Run until the fast runner hits the end of the line
+        while (fast != nullptr && fast->next != nullptr) {
+            slow = slow->next;       // 1 step
+            fast = fast->next->next; // 2 steps
+            
+            // If they meet at the same node, there is a loop!
+            if (slow == fast) {
+                return true;
+            }
+        }
+        
+        // Fast runner reached the end, so no loop exists
+        return false;
+    }
+};
