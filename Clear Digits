@@ -1,0 +1,4 @@
+char *clearDigits(char *s) {
+    for (char *o = s - 1, *p = s ; *++o || (*p = 0) ; *o <= '9' && p-- || (*p++ = *o));
+    return s;
+}
