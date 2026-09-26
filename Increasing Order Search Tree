@@ -1,0 +1,35 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+void    traverseTree(struct TreeNode **tab, struct TreeNode *root, int *idx){
+    if (!root) return;
+    traverseTree(tab, root->left, idx);
+    tab[(*idx)++] = root;
+    traverseTree(tab, root->right, idx);
+}
+
+struct TreeNode* increasingBST(struct TreeNode* root) {
+    struct TreeNode **tab = (struct TreeNode **)malloc(sizeof(struct TreeNode *) * 100);
+    int idx = 0;
+    traverseTree(tab, root, &idx);
+
+    root = tab[0];
+    struct TreeNode *curr = root;
+    curr->left = NULL;
+    for (int i = 1; i < idx; i++){
+        curr->left = NULL;
+        curr->right = tab[i];
+        curr = curr->right;
+    }
+    curr->right = NULL;
+    curr->left = NULL;
+
+    free(tab);
+
+    return root;
+}
