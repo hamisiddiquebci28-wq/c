@@ -1,0 +1,48 @@
+__attribute__((naked))
+int minLength(char * s){
+    __asm (
+        // 2141 2243
+        "push %rbp;"
+        "mov %rsp,%rbp;"
+
+        "push %rbx;"
+
+        "xor %eax,%eax;"
+        "xor %ebx,%ebx;"
+        "l4:;"
+        "movzbl (%rdi),%ecx;"
+        "cmp $0x0,%ecx;"
+        "je l1;"
+        "inc %eax;"
+        "push %rcx;"
+        "shl $0x7,%ecx;"
+        "shr $0x7,%ebx;"
+        "add %ecx,%ebx;"
+        "cmp $0x2141,%ebx;"
+        "je l2;"
+        "cmp $0x2243,%ebx;"
+        "je l2;"
+        "jmp l3;"
+        "l2:;"
+        "sub $0x2,%eax;"
+        "xor %ebx,%ebx;"
+        "pop %rcx;"
+        "pop %rcx;"
+        "cmp $0x0,%eax;"
+        "je l5;"
+        "movzbl (%rsp),%ebx;"
+        "l5:;"
+        "shl $0x7,%ebx;"
+        "l3:;"
+        "inc %rdi;"
+        "jmp l4;"
+
+
+        "l1:;"
+        "mov -0x8(%rbp),%rbx;"
+
+        "mov %rbp,%rsp;"
+        "pop %rbp;"
+        "ret;"
+    );
+}
